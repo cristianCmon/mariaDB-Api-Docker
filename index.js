@@ -1,0 +1,295 @@
+require('dotenv').config()
+const mariadb = require('mariadb');
+const express = require('express');
+const cors = require('cors');
+const app = express();
+
+app.use(cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+}));
+
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
+
+const pool = mariadb.createPool({
+     host: process.env.MARIA_URI, 
+     port: process.env.MARIA_PORT,
+     user: process.env.MARIA_USER, 
+     password: process.env.MARIA_PASSWORD,
+     database: 'centro',
+     connectionLimit: 5
+});
+
+
+const PORT = 3000;
+app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
+
+
+
+// APIS
+
+// CREAR USUARIO
+app.post('/usuarios', async (req, res) => {
+    let conn;
+
+    try {
+        const { nombre, apellidos, sexo, edad, telefono } = req.body;
+        conn = await pool.getConnection();
+
+        const result = await conn.query(
+            "INSERT INTO usuarios (nombre, apellidos, sexo, edad, telefono) VALUES (?, ?, ?, ?, ?)",
+            [nombre, apellidos, sexo, edad, telefono]
+        );
+
+        res.status(201).json({
+            message: "Usuario creado con éxito",
+            id: Number(result.insertId) // insertId contiene el nuevo ID auto-incremental
+        });
+
+    } catch (err) {
+        res.status(500).send(err.message);
+
+    } finally {
+        if (conn) conn.release();
+    }
+});
+
+// CREAR GRUPO
+app.post('/grupos', async (req, res) => {
+    let conn;
+
+    try {
+        const { nombre } = req.body;
+        conn = await pool.getConnection();
+
+        const result = await conn.query(
+            "INSERT INTO grupos (nombre) VALUES (?)", [nombre]
+        );
+
+        res.status(201).json({
+            message: "Grupo creado con éxito",
+            id: Number(result.insertId) // insertId contiene el nuevo ID auto-incremental
+        });
+
+    } catch (err) {
+        res.status(500).send(err.message);
+
+    } finally {
+        if (conn) conn.release();
+    }
+});
+
+// LEER USUARIOS
+app.get('/usuarios', async (req, res) => {
+    let conn;
+
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query("SELECT * FROM usuarios");
+        res.json(rows);
+
+    } catch (err) {
+        res.status(500).send(err.message);
+
+    } finally {
+        if (conn) conn.release();
+    }
+});
+
+// LEER USUARIO:ID
+app.get('/usuarios/:id', async (req, res) => {
+    let conn;
+
+    try {
+        const { id } = req.params;
+        conn = await pool.getConnection();
+        
+        const rows = await conn.query("SELECT * FROM usuarios WHERE id = ?", [id]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: "Usuario no encontrado" }); // Manejo de caso no existente
+        }
+
+        res.json(rows[0]); // Retornamos solo el primer objeto del array
+
+    } catch (err) {
+        res.status(500).send(err.message);
+
+    } finally {
+        if (conn) conn.release();
+    }
+});
+
+// LEER GRUPOS
+app.get('/grupos', async (req, res) => {
+    let conn;
+
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query("SELECT * FROM grupos");
+        res.json(rows);
+
+    } catch (err) {
+        res.status(500).send(err.message);
+
+    } finally {
+        if (conn) conn.release();
+    }
+});
+
+// LEER GRUPO:ID
+app.get('/grupos/:id', async (req, res) => {
+    let conn;
+
+    try {
+        const { id } = req.params;
+        conn = await pool.getConnection();
+        
+        const rows = await conn.query("SELECT * FROM grupos WHERE id = ?", [id]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: "Grupo no encontrado" }); // Manejo de caso no existente
+        }
+
+        res.json(rows[0]); // Retornamos solo el primer objeto del array
+
+    } catch (err) {
+        res.status(500).send(err.message);
+
+    } finally {
+        if (conn) conn.release();
+    }
+});
+
+// ACTUALIZAR USUARIO:ID
+app.put('/usuarios/:id', async (req, res) => {
+    let conn;
+
+    try {
+        const { id } = req.params;
+        const { nombre, apellidos, sexo, edad, telefono } = req.body;
+
+        conn = await pool.getConnection();
+
+        const result = await conn.query(
+            "UPDATE usuarios SET nombre = ?, apellidos = ?, sexo = ?, edad = ?, telefono = ? WHERE id = ?",
+            [nombre, apellidos, sexo, edad, telefono, id]
+        );
+
+        // Verificar si el registro existía
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+
+        res.json({ message: `Usuario con ID ${id} actualizado correctamente` });
+
+    } catch (err) {
+        res.status(500).send(err.message);
+
+    } finally {
+        if (conn) conn.release();
+    }
+});
+
+// ACTUALIZAR GRUPO:ID
+app.put('/grupos/:id', async (req, res) => {
+    let conn;
+
+    try {
+        const { id } = req.params;
+        const { nombre } = req.body;
+
+        conn = await pool.getConnection();
+
+        const result = await conn.query(
+            "UPDATE grupos SET nombre = ? WHERE id = ?", [nombre, id]
+        );
+
+        // Verificar si el registro existía
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Grupo no encontrado" });
+        }
+
+        res.json({ message: `Grupo con ID ${id} actualizado correctamente` });
+
+    } catch (err) {
+        res.status(500).send(err.message);
+
+    } finally {
+        if (conn) conn.release();
+    }
+});
+
+// BORRAR USUARIO:ID
+app.delete('/usuarios/:id', async (req, res) => {
+    let conn;
+
+    try {
+        const { id } = req.params;
+        conn = await pool.getConnection();
+
+        const result = await conn.query("DELETE FROM usuarios WHERE id = ?", [id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "No se encontró el usuario para eliminar" });
+        }
+
+        res.json({ message: `Usuario con ID ${id} eliminado correctamente` });
+
+    } catch (err) {
+        res.status(500).send(err.message);
+
+    } finally {
+        if (conn) conn.release();
+    }
+});
+
+// BORRAR GRUPO:ID
+app.delete('/grupos/:id', async (req, res) => {
+    let conn;
+
+    try {
+        const { id } = req.params;
+        conn = await pool.getConnection();
+
+        const result = await conn.query("DELETE FROM grupos WHERE id = ?", [id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "No se encontró el grupo solicitado" });
+        }
+
+        res.json({ message: `Grupo con ID ${id} eliminado correctamente` });
+
+    } catch (err) {
+        res.status(500).send(err.message);
+
+    } finally {
+        if (conn) conn.release();
+    }
+});
+
+
+// COMPROBADOR CONEXIÓN...
+async function waitForDB() {
+    let connected = false;
+    console.log("Esperando a que MariaDB esté lista...");
+
+    while (!connected) {
+        try {
+            const conn = await pool.getConnection();
+            await conn.ping();
+            conn.release();
+            connected = true;
+            console.log("MariaDB está lista.");
+
+        } catch (err) {
+            console.log("MariaDB no está lista. Reintentando en 2 segundos...");
+            await new Promise(res => setTimeout(res, 2000));
+        }
+    }
+}
+
+waitForDB();

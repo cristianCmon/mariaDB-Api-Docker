@@ -1,0 +1,53 @@
+### LEER USUARIOS
+GET http://localhost:3000/usuarios
+
+###
+GET http://localhost:3000/usuarios/2
+
+### LEER GRUPOS
+GET http://localhost:3000/grupos
+
+###
+GET http://localhost:3000/grupos/3
+
+### CREAR USUARIO
+POST http://localhost:3000/usuarios
+Content-Type: application/json
+{
+    "nombre": "Pepito",
+    "apellidos": "Nadie Nunca",
+    "sexo": "hombre",
+    "edad": "70",
+    "telefono": "666336699"
+}
+
+### CREAR GRUPO
+POST http://localhost:3000/grupos
+Content-Type: application/json
+{
+    "nombre": "Igualdad"
+}
+
+### ACTUALIZAR USUARIO
+PUT http://localhost:3000/usuarios/2
+Content-Type: application/json
+{
+    "nombre": "Hestefanía",
+    "apellidos": "Gutiérrez Pane",
+    "sexo": "Mujer",
+    "edad": "41",
+    "telefono": "665887712"
+}
+
+### ACTUALIZAR GRUPO
+PUT http://localhost:3000/grupos/3
+Content-Type: application/json
+{
+    "nombre": "Dibujitos"
+}
+
+### BORRAR USUARIO
+DELETE http://localhost:3000/usuarios/9
+
+### BORRAR GRUPO
+DELETE http://localhost:3000/grupos/6
