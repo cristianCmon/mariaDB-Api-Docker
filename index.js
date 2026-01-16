@@ -300,29 +300,21 @@ async function waitForDB() {
 waitForDB();
 
 async function startDatabase() {
-    
     let conn;
 
     try {
-
         conn = await pool.getConnection();
-
         await conn.query("CREATE DATABASE IF NOT EXISTS centro;");
-
         await conn.query("USE centro;")
-
         await conn.query("CREATE TABLE IF NOT EXISTS usuarios (id INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(50) NOT NULL, apellidos VARCHAR(50) NOT NULL, sexo VARCHAR(50) NOT NULL, edad VARCHAR(50) NOT NULL, telefono VARCHAR(50) NOT NULL);");
-
         await conn.query("CREATE TABLE IF NOT EXISTS grupos (id INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(50) NOT NULL);");
 
         // await conn.query("CREATE TABLE IF NOT EXISTS users_groups (user_id INT NOT NULL, group_id INT NOT NULL, FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE ON UPDATE CASCADE);")
 
     } catch (error) {
-
         console.log(`Ha habido un error al inicializar la base de datos: ${error}`);
 
     } finally {
-
         if (conn) conn.release();
 
     }
