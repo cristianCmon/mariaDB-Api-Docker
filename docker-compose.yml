@@ -1,0 +1,43 @@
+services:
+  api:
+    image: ejemplo-api:v1.0.0
+    container_name: api-maria
+    ports:
+      - "3000:3000"
+    environment:
+      # DB_HOST: ${DB_HOST}
+      DB_HOST: d-mariadb
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - backend
+
+  mariadb:
+    image: mariadb
+    container_name: d-mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: centro
+      MYSQL_ROOT: "%"
+    ports:
+      - "3307:3306" # El puerto 3307 del PC irá al 3306 del contenedor
+    volumes:
+      - ./db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb -uroot -proot -e 'SELECT 1'"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    networks:
+      - backend
+
+networks:
+  backend:

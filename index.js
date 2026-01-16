@@ -15,11 +15,11 @@ app.use(express.urlencoded({extended: true}));
 
 
 const pool = mariadb.createPool({
-     host: process.env.MARIA_URI, 
-     port: process.env.MARIA_PORT,
-     user: process.env.MARIA_USER, 
-     password: process.env.MARIA_PASSWORD,
-     database: 'centro',
+     host: process.env.DB_HOST, 
+     port: process.env.DB_PORT,
+     user: process.env.DB_USER, 
+     password: process.env.DB_PASSWORD,
+     database: process.env.DB_NAME,
      connectionLimit: 5
 });
 
@@ -286,10 +286,47 @@ async function waitForDB() {
             console.log("MariaDB está lista.");
 
         } catch (err) {
-            console.log("MariaDB no está lista. Reintentando en 2 segundos...");
+            console.log("MariaDB no está lista. Reintentando en 2 segundos..." + `\n
+                host: ${process.env.DB_HOST}, 
+                port: ${process.env.DB_PORT},
+                user: ${process.env.DB_USER}, 
+                password: ${process.env.DB_PASSWORD},
+                database: ${process.env.DB_NAME}`);
             await new Promise(res => setTimeout(res, 2000));
         }
     }
 }
 
 waitForDB();
+
+async function startDatabase() {
+    
+    let conn;
+
+    try {
+
+        conn = await pool.getConnection();
+
+        await conn.query("CREATE DATABASE IF NOT EXISTS centro;");
+
+        await conn.query("USE centro;")
+
+        await conn.query("CREATE TABLE IF NOT EXISTS usuarios (id INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(50) NOT NULL, apellidos VARCHAR(50) NOT NULL, sexo VARCHAR(50) NOT NULL, edad VARCHAR(50) NOT NULL, telefono VARCHAR(50) NOT NULL);");
+
+        await conn.query("CREATE TABLE IF NOT EXISTS grupos (id INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(50) NOT NULL);");
+
+        // await conn.query("CREATE TABLE IF NOT EXISTS users_groups (user_id INT NOT NULL, group_id INT NOT NULL, FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE ON UPDATE CASCADE);")
+
+    } catch (error) {
+
+        console.log(`Ha habido un error al inicializar la base de datos: ${error}`);
+
+    } finally {
+
+        if (conn) conn.release();
+
+    }
+
+}
+
+waitForDB().then(() => startDatabase());
