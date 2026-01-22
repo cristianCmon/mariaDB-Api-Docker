@@ -1,0 +1,11 @@
+
+	1. Instalar máquina virtual con Ubuntu
+		- Instalar coolify (requiere registro)
+			- Comprobar conexión desde navegador máquina real http://ipMVirtual:8000
+		- Instalar ngrok (requiere registro)
+			- Ejecutar en línea de comandos (ngrok http 8000)
+			- Conectar desde navegador máquina real a la dirección que aparece
+			- Configurar nuevo proyecto con apiDocker anterior
+			- Añadir repositorio público
+				- Configurar ruta Dockerfile
+				- Configurar variables de entorno

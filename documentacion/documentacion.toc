@@ -1,0 +1,9 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {section}{\numberline {1}Descripción del problema}{2}{}%
+\contentsline {section}{\numberline {2}Requisitos funcionales}{3}{}%
+\contentsline {section}{\numberline {3}Requisitos no funcionales}{4}{}%
+\contentsline {section}{\numberline {4}Casos de uso}{5}{}%
+\contentsline {section}{\numberline {5}Historias de usuario}{6}{}%
+\contentsline {section}{\numberline {6}Herramientas de desarrollo}{7}{}%
+\contentsline {section}{\numberline {7}Lenguajes de programación}{8}{}%
+\contentsline {section}{\numberline {8}Interfaz de la aplicación}{9}{}%

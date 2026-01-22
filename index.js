@@ -15,12 +15,12 @@ app.use(express.urlencoded({extended: true}));
 
 
 const pool = mariadb.createPool({
-     host: process.env.DB_HOST, 
-     port: process.env.DB_PORT,
-     user: process.env.DB_USER, 
-     password: process.env.DB_PASSWORD,
-     database: process.env.DB_NAME,
-     connectionLimit: 5
+    host: process.env.DB_HOST, 
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER, 
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    connectionLimit: 5
 });
 
 
@@ -30,6 +30,10 @@ app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${POR
 
 
 // APIS
+// Ruta Raiz
+// app.get('/', async (req,res) => {
+//     res.send('¡Bienvenido a la API!');
+// });
 
 // CREAR USUARIO
 app.post('/usuarios', async (req, res) => {
@@ -317,9 +321,7 @@ async function startDatabase() {
 
     } finally {
         if (conn) conn.release();
-
     }
-
 }
 
 waitForDB().then(() => startDatabase());
