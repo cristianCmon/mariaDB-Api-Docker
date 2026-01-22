@@ -304,8 +304,9 @@ async function startDatabase() {
 
     try {
         conn = await pool.getConnection();
-        await conn.query("CREATE DATABASE IF NOT EXISTS centro;");
-        await conn.query("USE centro;")
+        // COMENTADAS PARA CREAR BD DESDE COOLIFY
+        // await conn.query("CREATE DATABASE IF NOT EXISTS centro;");
+        // await conn.query("USE centro;");
         await conn.query("CREATE TABLE IF NOT EXISTS usuarios (id INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(50) NOT NULL, apellidos VARCHAR(50) NOT NULL, sexo VARCHAR(50) NOT NULL, edad VARCHAR(50) NOT NULL, telefono VARCHAR(50) NOT NULL);");
         await conn.query("CREATE TABLE IF NOT EXISTS grupos (id INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(50) NOT NULL);");
 
