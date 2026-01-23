@@ -27,17 +27,6 @@
 \newpage
 
 \section{Introducción}
-% \noindent \\El docente encargado de impartir el módulo de \textit{Programación de Servicios y Procesos}, Don Roberto Castro Liste,
-% ha encargado la realización de una tarea que consiste en crear un aplicación en \textbf{JavaFX} que permita chatear entre usuarios,
-% demostrando la comprensión y el dominio en el uso de sockets y también en el uso de hilos con la utilización de métodos como \textit{newFixedThreadPool()} 
-% de la clase \textit{ExecutorService}. \\ \\
-% El programa debe seguir estas pautas:\\
-% \begin{itemize}
-%     \item Crear una clase servidor que esté escuchando constantemente conexiones entrantes.
-%     \item Crear una clase cliente que permita enviar y recibir mensajes del servidor.
-%     \item Crear una clase manejadora que comunique correctamente las 2 clases anteriores.
-%     \item Diseñar una interfaz que permita ver de forma clara el funcionamiento del chat.
-% \end{itemize}
 \noindent \\El objetivo de esta tarea es detallar el proceso de configuración y despliegue automatizado de un proyecto 
 (contenedor \textit{Docker} \textit{API Express.js} + \textit{MariaDB}) alojado en un repositorio remoto (\textit{GitHub}), garantizando
 que cualquier cambio en el código fuente se refleje de manera eficiente en el entorno de ejecución.\\
@@ -47,112 +36,269 @@ iniciar la construcción de las imágenes de \textit{Docker} y desplegar los con
 la calidad de vida del trabajo consiguiendo, entre otra cosas, reducir errores humanos y optimizar los tiempos de entrega. \\
 \noindent \\Para ello seguiremos los siguiente pasos:\\
 \begin{itemize}
-    \item Crearemos una máquina virtual Ubuntu (versión 24.04.2 LTS) que actuará como nodo principal de despliegue.
-    \item Acceso Remoto y Exposición: Debido a las restricciones de red del entorno local, se emplea Ngrok para crear un túnel seguro que expone la instancia de Coolify y los servicios desplegados a la red pública.
-    \item Orquestación con Coolify: Actúa como el centro de control PaaS (Platform as a Service) que gestiona el ciclo de vida de la aplicación, desde la lectura del repositorio hasta el monitoreo de los contenedores.
+    \item Crearemos una \textbf{máquina virtual Ubuntu} (versión 24.04.2 LTS) que actuará como nodo principal de despliegue.
+    \item Instalaremos y usaremos \textbf{Ngrok} para crear túneles seguros desde nuestra máquina virtual hacia internet, permitiendo 
+    exponer servidores web (HTTP/HTTPS), sitios en desarrollo, webhooks y servicios TCP/SSH a una \underline{URL pública temporal}.
+    \item Instalaremos y usaremos \textbf{Coolify} para gestionar el ciclo de vida de la aplicación, desde la lectura del repositorio
+    hasta el monitoreo de los contenedores.
 \end{itemize}
 \newpage
 
-\section{Requisitos funcionales}
-\noindent \\A continuación se listan los requisitos funcionales del sistema:\\
-%\begin{description} sería equivalente pero items en negrita por defecto
-\begin{labeling}{ RF-5:} % el segundo parámetro marca el espaciado entre ítem y texto
-    \item[ \textbf{ RF-1}:] Solicitar al usuario que introduzca su nombre antes de entrar en el chat.
-    \item[ \textbf{ RF-2}:] Pulsar un botón que inicie la ejecución del programa en una nueva ventana.
-    \item[ \textbf{ RF-3}:] Permitir la inserción de mensajes de forma ágil únicamente usando el teclado.
-    \item[ \textbf{ RF-4}:] Mostrar correctamente y en tiempo real todos los mensajes de todos los participantes en el chat.
-    \item[ \textbf{ RF-5}:] Terminar los hilos en ejecución cuando se cierre la aplicación Cliente.
-\end{labeling}
-\newpage
-
-\section{Requisitos no funcionales}
-\noindent \\A continuación se listan los requisitos NO funcionales del sistema:\\
-\begin{labeling}{ RNF-5:}
-    \item[ \textbf{RNF-1}:] El tiempo de respuesta al pulsar el botón \textit{Entrar Chat} no debe superar los 2 segundos.
-    \item[ \textbf{RNF-2}:] La intefaz gráfica de usuario ha de ser fácilmente entendible.
-    \item[ \textbf{RNF-3}:] El tiempo de respuesta al mandar un mensaje pulsando Enter no debe superar el segundo.
-    \item[ \textbf{RNF-4}:] El usuario debe distinguir fácilmente sus mensajes del resto de mensajes de los demás usuarios.
-\end{labeling}
-\newpage
-
-\section{Casos de uso}
-\noindent \\A continuación se muestran los casos de uso mediante la siguiente tabla:\\ \\ \\
-\begin{tabular}{| m{5cm} | m{8cm} |} % | pinta las columnas verticales
-\hline % pinta las filas horizontales
-\textbf{Caso de uso} & \textbf{Descripción} \\
-\hline
-Introducir nombre & El usuario debe introducir su nombre antes de entrar en el chat. \\
-\hline
-Iniciar aplicación & El usuario puede iniciar la ventana de chat pulsando un botón. \\
-\hline
-Escribir mensaje & El usuario puede enviar un mensaje escribiendo y pulsando Enter. \\
-\hline
-Cerrar aplicación & El usuario puede cerrar la aplicación por completo pulsando el botón de cerrar ventana. \\
-\hline
-\end{tabular}
-\newpage
-
-\section{Historias de usuario}
-\noindent \\A continuación se muestran las historias de usuario mediante la siguiente tabla:\\ \\ \\
-\begin{tabular}{| m{2cm} | m{2cm} | m{4cm} | m{4cm} |}
-\hline
-\textbf{ID} & \textbf{Como...} & \textbf{Quiero...} & \textbf{Para...} \\
-\hline
-HU-01 & Usuario & Insertar mi nombre & Que me identifiquen en el chat \\
-\hline
-HU-02 & Usuario & Pulsar un botón & Iniciar la aplicación \\
-\hline
-HU-03 & Usuario & Manejar el chat únicamente con el teclado & Disfrutar de una buena usabilidad \\
-\hline
-HU-04 & Usuario & Ver los nombres de los participantes & Saber en todo momento con quién hablo \\
-\hline
-\end{tabular}
-\newpage
-
-\section{Herramientas de desarrollo}
-\noindent \\\textbf{IntelliJ Community Edition} es un IDE gratuito y de código abierto, ideal para el desarrollo en lenguajes JVM y Android.
-Sus características principales incluyen un potente editor de código con autocompletado inteligente y refactorización, soporte para control de versiones,
-un depurador integrado, y herramientas de pruebas unitarias. Está disponible para todas las plataformas.  \\
-\\Características principales: \\
+\section{Herramientas empleadas}
+\subsection{VirtualBox}
+\noindent \\\textit{VirtualBox} es un hipervisor de tipo 2 gratuito y de código abierto (GPLv2), ideal para virtualización en equipos 
+de escritorio. Sus características clave incluyen la capacidad de ejecutar múltiples sistemas operativos invitados 
+(Windows, Linux, macOS, etc.) de forma simultánea, alta portabilidad entre plataformas, creación de "snapshots"
+(instantáneas) para revertir fallos, soporte para dispositivos USB y redes virtuales.\\
+\noindent \\Las características principales de \textit{VirtualBox} son las siguienes:\\
 \begin{itemize}
-    \item \textbf{Editor de código potente:} Ofrece resaltado de sintaxis, análisis en tiempo real, sugerencias de código, e inspecciones y correcciones rápidas.
-    \item \textbf{Soporte para múltiples lenguajes:} Es compatible con Java, Kotlin, Groovy, Scala, y otros lenguajes JVM.
-    \item \textbf{Integración con control de versiones:} Permite la integración con sistemas como Git, SVN, y Mercurial.
+    \item \textbf{Multiplataforma y Soporte de SOs}: Puede instalarse en Windows, macOS, Linux y Solaris (anfitrión), y virtualizar
+    casi cualquier otro sistema operativo (invitado) de 32 o 64 bits.
+    \item \textbf{Guest Additions}: Conjunto de controladores y aplicaciones que optimizan el rendimiento, mejoran la comunicación
+    (carpetas compartidas, portapapeles compartido) y ajustan la resolución de pantalla.
+    \item \textbf{Amplias Opciones de Red}: Soporta modos NAT, puente (bridged), red interna, y red exclusiva del anfitrión (host-only)
+    para adaptar la conectividad de la VM.
+    \item \textbf{Soporte de Hardware Virtual}: Emula hardware moderno, incluyendo soporte para USB 2.0/3.0, hasta 32 CPUs virtuales,
+    y aceleración 3D.
 \end{itemize}
 \newpage
 
-\section{Lenguajes de programación}
-\noindent \\\textbf{JavaFX} se caracteriza por su capacidad de crear aplicaciones enriquecidas visualmente, integrando multimedia (audio, video) y gráficos vectoriales.
-Permite desarrollar aplicaciones multiplataforma (escritorio, web, móvil, smart TV). Otras características clave son
-la integración fluida con el ecosistema Java y herramientas como FXML y Scene Builder para un desarrollo más eficiente y colaborativo. \\
-\\Características principales: \\
+\subsection{Ngrok}
+\noindent \\\textit{Ngrok} es una herramienta de desarrollo que crea túneles seguros desde una red pública a servidores locales,
+permitiendo exponer proyectos localhost mediante URLs HTTPS sin configurar firewalls o redes. Ofrece inspección de tráfico en
+tiempo real, soporte para múltiples protocolos (HTTP, TCP), y es ideal para pruebas rápidas, webhooks y demostraciones a clientes. \\
+\noindent \\Las características principales de \textit{Ngrok} son las siguientes:\\
 \begin{itemize}
-    \item \textbf{Interfaces gráficas de usuario (GUI) enriquecidas:} Permite crear interfaces modernas y atractivas con animaciones, gráficos vectoriales, y elementos personalizables.
-    \item \textbf{Integración multimedia:} Facilita la inclusión de contenido de audio, video y otros medios dentro de las aplicaciones.
-    \item \textbf{Desarrollo declarativo (FXML):} Utiliza FXML, un lenguaje basado en XML, para describir la interfaz de usuario, lo que facilita el trabajo colaborativo entre diseñadores y desarrolladores.
+    \item \textbf{Exposición de Localhost}: Permite que servicios locales sean accesibles desde internet a través de una URL pública.
+    \item \textbf{Inspección de Tráfico}: Proporciona una interfaz web para analizar y depurar solicitudes HTTP/HTTPS entrantes.
+    \item \textbf{Túneles Seguros y Rápidos}: Crea conexiones seguras y cifradas (HTTPS/TLS) hacia muestra máquina local de forma instantánea.
+    \item \textbf{Soporte de Webhooks}: Facilita el desarrollo al permitir recibir notificaciones de servicios externos directamente.
+    en el entorno local.
 \end{itemize}
 \newpage
 
-\section{Interfaz de la aplicación}
-\noindent \\A continuación unas capturas de las diferentes vistas de la interfaz.\\ \\
-% \begin{figure}[hbt!]
-%     \centering
-%     \includegraphics[width=0.5\textwidth]{01.png}
-%     \caption{Vista inicial, requiere introducir nombre usuario para continuar}
-% \end{figure}
-% \noindent \\ \\
-% \begin{figure}[hbt!]
-%     \centering
-%     \includegraphics[width=0.5\textwidth]{02.png}
-%     \caption{Si el campo está vacío se muestra un placeholder en el interior del TextField}
-% \end{figure}
-% \newpage
+\subsection{Coolify}
+\noindent \\\textit{Coolify} es una plataforma de autoalojamiento (self-hosting) de código abierto y sin límites, diseñada
+como una alternativa gratuita a Vercel o Heroku. Permite desplegar y gestionar aplicaciones web, bases de datos (PostgreSQL, MySQL,
+Redis, MongoDB) y servicios en cualquier servidor (VPS, Raspberry Pi) mediante Docker. Se caracteriza por la automatización Git-Ops,
+SSL gratuito, backups y una interfaz intuitiva.\\
+\noindent \\Las características principales de \textit{Coolify} son las siguientes:\\
+\begin{itemize}
+    \item \textbf{Soporte Multi-tecnología}: Compatible con cualquier aplicación dockerizable, incluyendo Node.js, Python, PHP, Ruby on Rails, Rust y sitios estáticos.
+    \item \textbf{Gestión Total de Bases de Datos}: Permite crear, gestionar y hacer copias de seguridad de bases de datos como PostgreSQL, MySQL, Redis y MongoDB, así como herramientas como WordPress o N8N.
+    \item \textbf{Despliegue Automatizado (Git-Ops)}: Conexión con GitHub, GitLab o Bitbucket para realizar despliegues automáticos cada vez que se actualiza el código.
+    \item \textbf{Interfaz de Usuario Sencilla}: Panel de control moderno y fácil de usar, ideal tanto para principiantes como para desarrolladores experimentados.
+\end{itemize}
+\newpage
 
-% \noindent \\
-% \begin{figure}[hbt!]
-%     \centering
-%     \includegraphics[width=1\textwidth]{03.png}
-%     \caption{Los textos en color son los del usuario, en cursiva los de los demás}
-% \end{figure}
+\section{Instalaciones}
+\noindent \\En la máquina virtual, abrimos un terminal y pegamos los códigos que se muestran en las siguientes capturas (\underline{es necesario crearse una
+cuenta en cada aplicación}):\\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_0.png}
+    % \caption{Pegamos el código subrayado en el terminal y pulsamos Enter}
+\end{figure}
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_1.png}
+\end{figure}
+\newpage
+
+\section{Configuraciones y despliegues}
+\subsection{Ngrok local}
+\noindent \\En las siguientes capturas se muestra cómo levantar ngrok desde la terminal:\\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_2a.png}
+    % \caption{Pegamos el código subrayado en el terminal y pulsamos Enter}
+\end{figure}
+\noindent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_2b.png}
+    % \caption{Pegamos el código subrayado en el terminal y pulsamos Enter}
+\end{figure}
+\newpage
+
+\subsection{Coolify (repositorio y base de datos)}
+\noindent \\Una vez levantado Ngrok en la máquina virtual podremos acceder a Coolify en la máquina real abriendo un navegador y entrando en 
+la url. Miraremos lo siguiente:\\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_3a.png}
+    \caption{Página principal de Coolify}
+\end{figure}
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_3b.png}
+    \caption{Crearemos un nuevo proyecto}
+\end{figure}
+\newpage
+
+\indent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_3c.png}
+    \caption{Nos aparecerá el siguiente modal e introduciremos un nombre}
+\end{figure}
+\indent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_3d.png}
+    \caption{Pulsamos el botón de añadir recurso}
+\end{figure}
+\newpage
+
+\indent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_3e.png}
+    \caption{Deberemos crear 2 recursos: Uno que apunte al repositorio de nuestra API y una base de datos compatible con la de nuestra API.
+    En este caso empezaremos por crear el recurso del repositorio público, aunque el orden es indiferente}
+\end{figure}
+\newpage
+
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_4.png}
+    \caption{Configuramos siguiendo las indicaciones de esta captura}
+\end{figure}
+\indent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_4b.png}
+    \caption{Paralelamente necesitamos conocer la ip de la máquina virtual}
+\end{figure}
+\newpage
+
+\indent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_4a.png}
+    \caption{Seguimos las indicaciones de la captura. Posteriormente volveremos a este punto a configurar las variables de entorno}
+\end{figure}
+\newpage
+
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_4d.png}
+    \caption{Creamos el recurso de base de datos y la configuramos según la captura}
+\end{figure}
+\indent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_4e.png}
+    \caption{En el mismo recurso configuramos la siguiente variable}
+\end{figure}
+\newpage
+
+\noindent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_4c.png}
+    \caption{Volvemos al recurso repositorio y añadimos las variables de entorno de la base de datos tal como se muestra en la captura}
+\end{figure}
+\newpage
+
+\noindent \\Ahora sólo falta desplegar ambos recursos y comprobar si se pueden hacer peticiones a la API. Para ello introduciremos la url
+de la Figura 8 (en la que insertamos la ip de la máquina virtual). El resultado es el siguiente:
+\noindent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_4f.png}
+    \caption{Si todo ha ido bien deberíamos visualizar correctamente la llamada a la API}
+\end{figure}
+\newpage
+
+\subsection{Ngrok expuesto en Internet}
+\noindent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_10b.png}
+    \caption{Desde Coolify copiamos la url del dominio enlazado al repositorio}
+\end{figure}
+
+\noindent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_10.png}
+    \caption{Desde un terminal levantamos Ngrok en el puerto 80 con la url anterior pasada al parámetro \textit{--host-header}}
+\end{figure}
+\newpage
+
+\noindent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_11.png}
+    \caption{Entramos a la url proporcionada por Ngrok desde el teléfono móvil}
+\end{figure}
+
+\noindent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_9.png}
+    \caption{Conexiones satisfactorias en captura actual y anterior}
+\end{figure}
+\newpage
+
+\subsection{Coolify (Webhook)}
+\noindent \\Los Webhooks nos permiten, entre otras cosas, desplegar automáticamente una nueva versión de la aplicación cada vez que enviamos 
+cambios (push) a una rama específica de nuestro repositorio remoto.\\
+\noindent \\La configuración del lado de Coolify quedaría así:\\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_12.png}
+    \caption{Necesitaremos estos datos para enlazarlos con GitHub}
+\end{figure}
+\newpage
+\noindent La configuración del lado de nuestro proyecto de GitHub quedaría así:
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_13.png}
+    \caption{Importante seleccionar el formato de datos json}
+\end{figure}
+\noindent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_14.png}
+    \caption{Una vez añadido el Webhook se hará un ping de comprobación}
+\end{figure}
+\newpage
+
+\noindent \\Ahora comprobaremos el correcto funcionamiento del Webhook recién creado realizando un push a la rama principal de
+nuestro repositorio:\\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_15.png}
+    \caption{El endpoint raíz de nuestra API...}
+\end{figure}
+\noindent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_16.png}
+    \caption{...muestra lo siguiente}
+\end{figure}
+\noindent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_17.png}
+    \caption{Si lo modificamos...}
+\end{figure}
+\newpage
+
+\noindent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_18.png}
+    \caption{...y pusheamos el cambio...}
+\end{figure}
+\noindent \\
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot_19.png}
+    \caption{...observaremos que el cambio se ha realizado automáticamente}
+\end{figure}
+\newpage
 
 \end{document}
