@@ -31,9 +31,9 @@ app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${POR
 
 // APIS
 // Ruta Raiz
-// app.get('/', async (req,res) => {
-//     res.send('¡Bienvenido a la API!');
-// });
+app.get('/', async (req,res) => {
+    res.send('<div style="color:ForestGreen;font-size:60;font-style:italic;font-weight:bold;">¡Bienvenido a la API!</div>');
+});
 
 // CREAR USUARIO
 app.post('/usuarios', async (req, res) => {

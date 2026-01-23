@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.9.26)  22 JAN 2026 17:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.9.26)  23 JAN 2026 11:41
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -224,98 +224,103 @@ LaTeX Info: Redefining \% on input line 1.
 
 
 [1]
-Underfull \hbox (badness 10000) in paragraph at lines 30--35
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 44.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 44.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 44.
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--49
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 30--35
+Underfull \hbox (badness 10000) in paragraph at lines 41--49
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--49
 
  []
 
 
 
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 44--46
+Underfull \hbox (badness 10000) in paragraph at lines 57--59
 
  []
 
 
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 56--57
+Underfull \hbox (badness 10000) in paragraph at lines 69--70
 
  []
 
 
 
 [4]
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 67.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 67.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 67.
-
-Underfull \hbox (badness 10000) in paragraph at lines 66--80
+Underfull \hbox (badness 10000) in paragraph at lines 79--93
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 66--80
+Underfull \hbox (badness 10000) in paragraph at lines 79--93
 
  []
 
 
 
 [5]
-Underfull \hbox (badness 1668) in paragraph at lines 88--89
+Underfull \hbox (badness 1668) in paragraph at lines 101--102
 []|\OT1/cmr/m/n/12 Que me iden-ti-fi-quen
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 83--97
+Underfull \hbox (badness 10000) in paragraph at lines 96--110
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 83--97
+Underfull \hbox (badness 10000) in paragraph at lines 96--110
 
  []
 
 
 
 [6]
-Underfull \hbox (badness 10000) in paragraph at lines 100--104
+Underfull \hbox (badness 10000) in paragraph at lines 113--117
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 100--104
+Underfull \hbox (badness 10000) in paragraph at lines 113--117
 
  []
 
 
 
 [7]
-Underfull \hbox (badness 10000) in paragraph at lines 112--116
+Underfull \hbox (badness 10000) in paragraph at lines 125--129
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 112--116
+Underfull \hbox (badness 10000) in paragraph at lines 125--129
 
  []
 
 
 
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 124--137
+Underfull \hbox (badness 10000) in paragraph at lines 137--150
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 124--137
+Underfull \hbox (badness 10000) in paragraph at lines 137--150
 
  []
 
@@ -339,7 +344,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  108i,9n,107p,369b,365s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/cristianf/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/cristianf/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/cristianf/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/cristianf/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on documentacion.pdf (10 pages, 78136 bytes).
+Output written on documentacion.pdf (10 pages, 79182 bytes).
 PDF statistics:
  55 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

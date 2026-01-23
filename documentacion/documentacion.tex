@@ -26,17 +26,30 @@
 \tableofcontents % Índice
 \newpage
 
-\section{Descripción del problema}
-\noindent \\El docente encargado de impartir el módulo de \textit{Programación de Servicios y Procesos}, Don Roberto Castro Liste,
-ha encargado la realización de una tarea que consiste en crear un aplicación en \textbf{JavaFX} que permita chatear entre usuarios,
-demostrando la comprensión y el dominio en el uso de sockets y también en el uso de hilos con la utilización de métodos como \textit{newFixedThreadPool()} 
-de la clase \textit{ExecutorService}. \\ \\
-El programa debe seguir estas pautas:\\
+\section{Introducción}
+% \noindent \\El docente encargado de impartir el módulo de \textit{Programación de Servicios y Procesos}, Don Roberto Castro Liste,
+% ha encargado la realización de una tarea que consiste en crear un aplicación en \textbf{JavaFX} que permita chatear entre usuarios,
+% demostrando la comprensión y el dominio en el uso de sockets y también en el uso de hilos con la utilización de métodos como \textit{newFixedThreadPool()} 
+% de la clase \textit{ExecutorService}. \\ \\
+% El programa debe seguir estas pautas:\\
+% \begin{itemize}
+%     \item Crear una clase servidor que esté escuchando constantemente conexiones entrantes.
+%     \item Crear una clase cliente que permita enviar y recibir mensajes del servidor.
+%     \item Crear una clase manejadora que comunique correctamente las 2 clases anteriores.
+%     \item Diseñar una interfaz que permita ver de forma clara el funcionamiento del chat.
+% \end{itemize}
+\noindent \\El objetivo de esta tarea es detallar el proceso de configuración y despliegue automatizado de un proyecto 
+(contenedor \textit{Docker} \textit{API Express.js} + \textit{MariaDB}) alojado en un repositorio remoto (\textit{GitHub}), garantizando
+que cualquier cambio en el código fuente se refleje de manera eficiente en el entorno de ejecución.\\
+\noindent \\También buscaremos la \underline{Integración Continua} mediante la conexión directa entre el repositorio remoto 
+y \textit{Coolify}. Este enfoque permitirá al servidor detectar automáticamente nuevas actualizaciones en la rama principal,
+iniciar la construcción de las imágenes de \textit{Docker} y desplegar los contenedores sin intervención manual, mejorando sustancialmente 
+la calidad de vida del trabajo consiguiendo, entre otra cosas, reducir errores humanos y optimizar los tiempos de entrega. \\
+\noindent \\Para ello seguiremos los siguiente pasos:\\
 \begin{itemize}
-    \item Crear una clase servidor que esté escuchando constantemente conexiones entrantes.
-    \item Crear una clase cliente que permita enviar y recibir mensajes del servidor.
-    \item Crear una clase manejadora que comunique correctamente las 2 clases anteriores.
-    \item Diseñar una interfaz que permita ver de forma clara el funcionamiento del chat.
+    \item Crearemos una máquina virtual Ubuntu (versión 24.04.2 LTS) que actuará como nodo principal de despliegue.
+    \item Acceso Remoto y Exposición: Debido a las restricciones de red del entorno local, se emplea Ngrok para crear un túnel seguro que expone la instancia de Coolify y los servicios desplegados a la red pública.
+    \item Orquestación con Coolify: Actúa como el centro de control PaaS (Platform as a Service) que gestiona el ciclo de vida de la aplicación, desde la lectura del repositorio hasta el monitoreo de los contenedores.
 \end{itemize}
 \newpage
 
